@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Khkula — Afghan Traditional Clothing & Wedding Items</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream: '#FFFBF7',
+            'cream-dark': '#F5EDE4',
+            darkred: '#8B1A1A',
+            'darkred-light': '#A52A2A',
+            'darkred-dark': '#6B0F0F',
+            gold: '#C9A84C',
+            'gold-light': '#D4B85A',
+            'gold-dark': '#A88B3A',
+          },
+          fontFamily: {
+            display: ['Playfair Display', 'serif'],
+            body: ['Lato', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="font-body">
+
+  <!-- Navbar -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16 md:h-20">
+      <a href="#" onclick="navigateTo('home');return false;" class="flex items-center gap-1 z-10 nav-logo">
+        <span class="font-display text-2xl md:text-3xl font-bold tracking-wider">KHKUL<span class="text-gold">A</span></span>
+      </a>
+      <div class="hidden lg:flex items-center gap-8">
+        <a href="#" onclick="navigateTo('home');return false;" class="nav-link active" data-page="home">Home</a>
+        <a href="#" onclick="navigateTo('shop');return false;" class="nav-link" data-page="shop">Shop</a>
+        <a href="#" onclick="navigateTo('tailoring');return false;" class="nav-link" data-page="tailoring">Tailoring</a>
+        <a href="#" onclick="navigateTo('about');return false;" class="nav-link" data-page="about">About</a>
+      </div>
+      <div class="flex items-center gap-3 z-10">
+        <div class="flex items-center">
+          <div class="search-bar" id="search-bar-desktop">
+            <input type="text" placeholder="Search products..." id="search-input-desktop" onkeyup="handleSearch(this.value)">
+          </div>
+          <button onclick="toggleSearch()" class="nav-icon-btn p-2" aria-label="Search">
+            <i class="fas fa-search text-lg"></i>
+          </button>
+        </div>
+        <button onclick="toggleCart()" class="nav-icon-btn p-2 relative" aria-label="Cart">
+          <i class="fas fa-shopping-bag text-lg"></i>
+          <span id="cart-badge" class="cart-badge hidden">0</span>
+        </button>
+        <button onclick="toggleMobileMenu()" class="nav-icon-btn p-2 lg:hidden" aria-label="Menu">
+          <i class="fas fa-bars text-lg"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <div id="mobile-overlay" class="panel-overlay" onclick="toggleMobileMenu()"></div>
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="mobile-panel">
+    <div class="p-6">
+      <div class="flex items-center justify-between mb-10">
+        <span class="font-display text-2xl font-bold tracking-wider">KHKUL<span class="text-gold">A</span></span>
+        <button onclick="toggleMobileMenu()" class="p-2 text-gray-500 hover:text-darkred"><i class="fas fa-times text-xl"></i></button>
+      </div>
+      <div class="flex flex-col gap-1">
+        <a href="#" onclick="navigateTo('home');toggleMobileMenu();return false;" class="mobile-link">Home</a>
+        <a href="#" onclick="navigateTo('shop');toggleMobileMenu();return false;" class="mobile-link">Shop</a>
+        <a href="#" onclick="navigateTo('tailoring');toggleMobileMenu();return false;" class="mobile-link">Custom Tailoring</a>
+        <a href="#" onclick="navigateTo('about');toggleMobileMenu();return false;" class="mobile-link">About</a>
+      </div>
+      <div class="mt-8 pt-6 border-t border-gray-100">
+        <p class="text-xs text-gray-400 uppercase tracking-wider font-bold mb-3">Categories</p>
+        <div class="flex flex-col gap-1" id="mobile-categories"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Overlay -->
+  <div id="cart-overlay" class="panel-overlay" onclick="toggleCart()"></div>
+  <!-- Cart Panel -->
+  <div id="cart-panel" class="cart-panel">
+    <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+      <h3 class="font-display text-xl font-bold">Your Cart</h3>
+      <button onclick="toggleCart()" class="p-2 text-gray-400 hover:text-darkred transition-colors"><i class="fas fa-times text-lg"></i></button>
+    </div>
+    <div class="flex-1 overflow-y-auto px-6" id="cart-items"></div>
+    <div class="p-6 border-t border-gray-100" id="cart-footer"></div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast"><i class="fas fa-check-circle mr-2"></i><span id="toast-text">Added to cart</span></div>
+
+  <!-- Main Content -->
+  <main id="page-content"></main>
+
+  <!-- Footer -->
+  <footer id="site-footer" class="bg-gray-900 text-gray-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-16">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div>
+          <span class="font-display text-2xl font-bold tracking-wider text-white">KHKUL<span class="text-gold">A</span></span>
+          <p class="mt-4 text-sm leading-relaxed text-gray-400">Bringing the timeless beauty of Afghan craftsmanship to the world. Every piece tells a story of heritage, artistry, and love.</p>
+          <div class="flex gap-4 mt-6">
+            <a href="#" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f text-sm"></i></a>
+            <a href="#" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram text-sm"></i></a>
+            <a href="#" class="social-icon" aria-label="Pinterest"><i class="fab fa-pinterest-p text-sm"></i></a>
+            <a href="#" class="social-icon" aria-label="WhatsApp"><i class="fab fa-whatsapp text-sm"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Quick Links</h4>
+          <ul class="space-y-3 text-sm">
+            <li><a href="#" onclick="navigateTo('home');return false;" class="footer-link">Home</a></li>
+            <li><a href="#" onclick="navigateTo('shop');return false;" class="footer-link">Shop All</a></li>
+            <li><a href="#" onclick="navigateTo('tailoring');return false;" class="footer-link">Custom Tailoring</a></li>
+            <li><a href="#" onclick="navigateTo('about');return false;" class="footer-link">Our Story</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Categories</h4>
+          <ul class="space-y-3 text-sm" id="footer-categories"></ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Contact Us</h4>
+          <ul class="space-y-4 text-sm">
+            <li class="flex items-start gap-3"><i class="fas fa-map-marker-alt text-gold mt-1"></i><span class="text-gray-400">Kabul, Afghanistan<br>Shahr-e-Naw, Street 7</span></li>
+            <li class="flex items-center gap-3"><i class="fas fa-phone text-gold"></i><span class="text-gray-400">+93 70 123 4567</span></li>
+            <li class="flex items-center gap-3"><i class="fas fa-envelope text-gold"></i><span class="text-gray-400">hello@khkula.af</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-gray-800">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-xs text-gray-500">&copy; 2025 Khkula. All rights reserved.</p>
+        <div class="flex gap-6 text-xs text-gray-500">
+          <a href="#" class="footer-link">Privacy Policy</a>
+          <a href="#" class="footer-link">Terms of Service</a>
+          <a href="#" class="footer-link">Shipping Info</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
