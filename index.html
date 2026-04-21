@@ -4,6 +4,43 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Khkula — Afghan Traditional Clothing & Wedding Items</title>
+
+  <!--
+    ╔══════════════════════════════════════════════════════════════╗
+    ║  SECURITY: Content Security Policy                          ║
+    ║  Restricts which scripts/styles/frames can load.           ║
+    ║  For Netlify/Vercel you should ALSO add these as HTTP       ║
+    ║  headers in netlify.toml / vercel.json (see README).       ║
+    ╚══════════════════════════════════════════════════════════════╝
+  -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src  'self' 'unsafe-inline'
+                https://cdn.tailwindcss.com
+                https://cdnjs.cloudflare.com
+                https://www.paypal.com
+                https://www.paypalobjects.com;
+    style-src   'self' 'unsafe-inline'
+                https://fonts.googleapis.com
+                https://cdnjs.cloudflare.com;
+    font-src    'self'
+                https://fonts.gstatic.com
+                https://cdnjs.cloudflare.com;
+    img-src     'self' data: https:;
+    frame-src   https://www.paypal.com
+                https://www.sandbox.paypal.com;
+    connect-src 'self'
+                https://api.sandbox.paypal.com
+                https://www.sandbox.paypal.com;
+  ">
+
+  <!-- SECURITY: Prevent clickjacking in older browsers -->
+  <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+  <!-- SECURITY: Stop MIME-type sniffing -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <!-- SECURITY: No referrer leakage -->
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -48,7 +85,10 @@
       <div class="flex items-center gap-3 z-10">
         <div class="flex items-center">
           <div class="search-bar" id="search-bar-desktop">
-            <input type="text" placeholder="Search products..." id="search-input-desktop" onkeyup="handleSearch(this.value)">
+            <input type="text" placeholder="Search products..." id="search-input-desktop"
+                   onkeyup="handleSearch(this.value)"
+                   maxlength="100"
+                   autocomplete="off">
           </div>
           <button onclick="toggleSearch()" class="nav-icon-btn p-2" aria-label="Search">
             <i class="fas fa-search text-lg"></i>
@@ -155,5 +195,13 @@
   </footer>
 
   <script src="script.js"></script>
+
+  <!--
+    PayPal SDK — SANDBOX mode (client-id=test).
+    When going live, replace client-id=test with your real PayPal Client ID.
+    Keep currency matching your store's currency.
+  -->
+  <script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD&intent=capture" defer></script>
+
 </body>
 </html>
